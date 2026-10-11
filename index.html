@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ランダムお絵かきアート</title>
+<style>
+  body {
+    margin: 0;
+    background: #17172b;
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+  }
+  h1 { padding-top: 20px; }
+  p { color: #ddddff; }
+  canvas {
+    display: block;
+    margin: 20px auto;
+    background: white;
+    border-radius: 12px;
+    max-width: 95%;
+    cursor: crosshair;
+  }
+  button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 20px;
+    background: #ff70b8;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<h1>🎨 ランダムお絵かきアート</h1>
+<p>画面をクリックして、カラフルなアートを作ろう！</p>
+<canvas id="art" width="600" height="400"></canvas>
+<button onclick="clearArt()">クリアする</button>
+<p>世界にひとつだけの作品を作ってみよう！</p>
+
+<script>
+const canvas = document.getElementById("art");
+const ctx = canvas.getContext("2d");
+
+function drawCircle(x, y) {
+  const colors = [
+    "#ff5c8a", "#ffd166", "#06d6a0",
+    "#4cc9f0", "#b185ff", "#ff914d"
+  ];
+  const color = colors[Math.floor(Math.random() * colors.length)];
+  const size = Math.random() * 35 + 10;
+
+  ctx.beginPath();
+  ctx.arc(x, y, size, 0, Math.PI * 2);
+  ctx.fillStyle = color;
+  ctx.globalAlpha = 0.75;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+}
+
+canvas.addEventListener("mousemove", function(e) {
+  if (e.buttons === 1) {
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left) * canvas.width / rect.width;
+    const y = (e.clientY - rect.top) * canvas.height / rect.height;
+    drawCircle(x, y);
+  }
+});
+
+canvas.addEventListener("click", function(e) {
+  const rect = canvas.getBoundingClientRect();
+  const x = (e.clientX - rect.left) * canvas.width / rect.width;
+  const y = (e.clientY - rect.top) * canvas.height / rect.height;
+  drawCircle(x, y);
+});
+
+function clearArt() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+</script>
+</body>
+</html>
